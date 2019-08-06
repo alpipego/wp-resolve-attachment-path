@@ -1,7 +1,7 @@
 {
     "name": "alpipego/resolve-attachment-path",
     "description": "Resolve Relative Attachment Paths in WordPress",
-    "license": "GPL",
+    "license": "MIT",
     "type": "wordpress-plugin",
     "require": {
         "php": ">=5.4",
