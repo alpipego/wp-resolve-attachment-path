@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Resolve Attachment Path
  * Plugin URI:  https://alpipego.com/
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Alex
  * Author URI:  http://alpipego.com/
  */
 
 add_filter('upload_dir', function($uploads) {
-	$uploads['path'] = realpath($uploads['path']);
-	$uploads['basedir'] = realpath($uploads['basedir']);
+	$uploads['path']    = ($path = realpath($uploads['path'])) ? $path : $uploads['path'];
+	$uploads['basedir'] = ($basedir = realpath($uploads['basedir'])) ? $basedir : $uploads['basedir'];
 
 	while (strpos($uploads['url'], '/./')) {
 		$uploads['url'] = preg_replace( '%(?:/\.{1}/)%', '/', $uploads['url'] );
