@@ -7,25 +7,28 @@
  * Author URI:  http://alpipego.com/
  */
 
-add_filter('upload_dir', function($uploads) {
-	$uploads['path']    = ($path = realpath($uploads['path'])) ? $path : $uploads['path'];
-	$uploads['basedir'] = ($basedir = realpath($uploads['basedir'])) ? $basedir : $uploads['basedir'];
+add_filter('upload_dir', function ($uploads) {
+    $uploads['path']    = ($path = realpath($uploads['path'])) ? $path : $uploads['path'];
+    $uploads['basedir'] = ($basedir = realpath($uploads['basedir'])) ? $basedir : $uploads['basedir'];
 
-	while (strpos($uploads['url'], '/./')) {
-		$uploads['url'] = preg_replace( '%(?:/\.{1}/)%', '/', $uploads['url'] );
-	}
+    foreach ($uploads as &$fragment) {
+        while (strpos($fragment, '/./')) {
+            $fragment = preg_replace('%(?:/\./)%', '/', $fragment);
+        }
 
-	while (strpos($uploads['baseurl'], '/./')) {
-		$uploads['baseurl'] = preg_replace( '%(?:/\.{1}/)%', '/', $uploads['baseurl'] );
-	}
+        while (strpos($fragment, '/../')) {
+            $fragment = preg_replace('%(?:([^/]+?)/\.{2}/)%', '', $fragment);
+        }
 
-	while (strpos($uploads['url'], '/../')) {
-		$uploads['url'] = preg_replace( '%(?:([^/]+?)/\.{2}/)%', '', $uploads['url']);
-	}
+        if (strpos($fragment, '/.')) {
+            $fragment = preg_replace('%(?:/\.)$%', '/', $fragment);
+        }
 
-	while (strpos($uploads['baseurl'], '/../')) {
-		$uploads['baseurl'] = preg_replace( '%(?:([^/]+?)/\.{2}/)%', '', $uploads['baseurl']);
-	}
+        if (strpos($fragment, '/..')) {
+            $fragment = preg_replace('%(?:([^/]+?)/\.{2})$%', '', $fragment);
+        }
+    }
+    unset($fragment);
 
-	return $uploads;
+    return $uploads;
 });
