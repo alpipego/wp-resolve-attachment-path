@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Resolve Attachment Path
  * Plugin URI:  https://alpipego.com/
- * Version:     1.0.1
+ * Version:     1.0.3
  * Author:      Alex
  * Author URI:  http://alpipego.com/
  */
@@ -13,19 +13,19 @@ add_filter('upload_dir', function ($uploads) {
 
     foreach ($uploads as &$fragment) {
         while (strpos($fragment, '/./')) {
-            $fragment = preg_replace('%(?:/\./)%', '/', $fragment);
+            $fragment = preg_replace('%/\./%', '/', $fragment);
         }
 
         while (strpos($fragment, '/../')) {
-            $fragment = preg_replace('%(?:([^/]+?)/\.{2}/)%', '', $fragment);
+            $fragment = preg_replace('%([^/]+?)/\.{2}/%', '', $fragment);
         }
 
         if (strpos($fragment, '/.')) {
-            $fragment = preg_replace('%(?:/\.)$%', '/', $fragment);
+            $fragment = preg_replace('%/\.$%', '/', $fragment);
         }
 
         if (strpos($fragment, '/..')) {
-            $fragment = preg_replace('%(?:([^/]+?)/\.{2})$%', '', $fragment);
+            $fragment = preg_replace('%([^/]+?)/\.{2}$%', '', $fragment);
         }
     }
     unset($fragment);
