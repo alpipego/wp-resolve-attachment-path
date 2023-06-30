@@ -1,16 +1,13 @@
 <?php
 /**
  * Plugin Name: Resolve Attachment Path
- * Plugin URI:  https://alpipego.com/
- * Version:     1.0.3
+ * Plugin URI:  https://github.com/alpipego/wp-resolve-attachment-path
+ * Version:     1.1.0
  * Author:      Alex
- * Author URI:  http://alpipego.com/
+ * Author URI:  https://alpipego.com/
  */
 
 add_filter('upload_dir', function ($uploads) {
-    $uploads['path']    = ($path = realpath($uploads['path'])) ? $path : $uploads['path'];
-    $uploads['basedir'] = ($basedir = realpath($uploads['basedir'])) ? $basedir : $uploads['basedir'];
-
     foreach ($uploads as &$fragment) {
         while (strpos($fragment, '/./')) {
             $fragment = preg_replace('%/\./%', '/', $fragment);
